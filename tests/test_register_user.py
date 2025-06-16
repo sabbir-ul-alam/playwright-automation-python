@@ -1,56 +1,48 @@
-from playwright.sync_api import Playwright, Page
-import pytest
-from playwright.sync_api import expect
+from playwright.sync_api import Page
 from page_objects.home_page import HomePage
-from utils.css_assert import assert_css_property
+from test_data.registration_data import UserRegisterData
 
 
+registration_data = UserRegisterData()
+
+
+'''
+Test Case 1: Register User
+1. Launch browser
+2. Navigate to url 'http://automationexercise.com'
+3. Verify that home page is visible successfully
+4. Click on 'Signup / Login' button
+5. Verify 'New User Signup!' is visible
+6. Enter name and email address
+7. Click 'Signup' button
+8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
+9. Fill details: Title, Name, Email, Password, Date of birth
+10. Select checkbox 'Sign up for our newsletter!'
+11. Select checkbox 'Receive special offers from our partners!'
+12. Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number
+13. Click 'Create Account button'
+14. Verify that 'ACCOUNT CREATED!' is visible
+15. Click 'Continue' button
+16. Verify that 'Logged in as username' is visible
+17. Click 'Delete Account' button
+18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+
+'''
 def test_case_1_register_user(page: Page):
     homepage = HomePage(page)
     homepage.visit()
-    assert homepage.is_loaded()
-    assert_css_property(homepage.locators.home_link,'color', 'rgb(255, 165, 0)')
+    assert homepage.is_loaded(), 'Failed to load homepage'
     login_page = homepage.goto_login_or_signup()
     signup_page = login_page.signup('Sabbir','ssualsabbir@gmail.com')
-
-
-    # # page.get_by_role("radio", name="Mr.").check()
-    # # page.get_by_role("textbox", name="Name *", exact=True).click()
-    # # page.get_by_role("textbox", name="Password *").click()
-    # page.get_by_role("textbox", name="Password *").fill("123456789")
-    # page.locator("#days").select_option("29")
-    # page.locator("#months").select_option("10")
-    # page.locator("#years").select_option("1996")
-    # page.get_by_role("checkbox", name="Sign up for our newsletter!").check()
-    # page.get_by_role("checkbox", name="Receive special offers from").check()
-    # # page.get_by_role("textbox", name="First name *").click()
-    # page.get_by_role("textbox", name="First name *").fill("sabbir ul alam")
-    # # page.get_by_role("textbox", name="First name *").press("Tab")
-    # page.get_by_role("textbox", name="Last name *").fill("sabbir")
-    # page.get_by_role("paragraph").filter(has_text="Company").first.click()
-    # # page.get_by_role("textbox", name="Company", exact=True).fill("tigerit")
-    # # page.get_by_role("textbox", name="Address * (Street address, P.").click()
-    # page.get_by_role("textbox", name="Address * (Street address, P.").fill("matikata")
-    # page.get_by_label("Country *").select_option("United States")
-    # # page.get_by_role("textbox", name="State *").click()
-    # page.get_by_role("textbox", name="State *").fill("chicago")
-    # # page.get_by_text("Title Mr. Mrs. Name * Email").click()
-    # # page.get_by_role("textbox", name="City * Zipcode *").click()
-    # page.get_by_role("textbox", name="City * Zipcode *").fill("illonois")
-    # # page.locator("#zipcode").click()
-    # page.locator("#zipcode").fill("34430")
-    # # page.get_by_role("textbox", name="Mobile Number *").click()
-    # page.get_by_role("textbox", name="Mobile Number *").fill("01558258590")
-    # page.get_by_role("button", name="Create Account").click()
-    # page.pause()
-    # page.get_by_text("Account Created!").click()
-    expect(page.get_by_text("Account Created!")).to_be_visible()
-    page.get_by_role("link", name="Continue").click()
-    expect(page.get_by_text("Logged in as sabbir")).to_be_visible()
-    # page.get_by_text("Logged in as sabbir").click()
-    page.get_by_role("link", name="Delete Account").click()
-    expect(page.get_by_text("Account Deleted!")).to_be_visible()
-    page.get_by_role("link", name="Continue").click()
-
+    confirmation_page = signup_page.create_account(registration_data)
+    assert confirmation_page.is_account_created(),'Failed to create Account'
+    homepage =  confirmation_page.goback_to_homepage()
+    assert homepage.is_loaded(),'Failed to load homepage'
+    #verify logged is as user name visible
+    assert homepage.is_user_logged_in(registration_data.name),'Failed to logged in user after signup'
+    confirmation_page =  homepage.delete_account()
+    assert confirmation_page.is_account_deleted(),'Failed to delete account'
+    homepage = confirmation_page.goback_to_homepage()
+    assert homepage.is_loaded()
 
 
