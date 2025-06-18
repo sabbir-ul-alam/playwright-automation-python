@@ -3,6 +3,7 @@ import re
 from playwright.sync_api import Page
 
 from page_objects.confirmation_page import ConfirmationPage
+from page_objects.contactus_page import ContactusPage
 from page_objects.login_page import LoginPage
 from utils.css_helper import get_css_property
 
@@ -24,6 +25,7 @@ class HomePage:
             self.logged_in_as = page.get_by_text(re.compile("Logged in as \w+",re.IGNORECASE))
             self.delete_account_link = page.locator('a[href="/delete_account"]')
             self.logout_link = page.locator('a[href="/logout"]')
+            self.contactus_link = page.locator('a[href="/contact_us"]')
 
     def visit(self):
         self.page.goto(self.homeUrl)
@@ -39,6 +41,10 @@ class HomePage:
     def goto_login_or_signup(self):
         self.locators.login_link.click()
         return LoginPage(self.page)
+
+    def goto_contactus(self):
+        self.locators.contactus_link.click()
+        return ContactusPage(self.page)
 
     def is_user_logged_in(self, user_name:str):
         element = self.locators.logged_in_as
