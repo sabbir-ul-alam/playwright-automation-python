@@ -33,7 +33,7 @@ def test_case_1_register_user(page: Page):
     homepage.visit()
     assert homepage.is_loaded(), 'Failed to load homepage'
     login_page = homepage.goto_login_or_signup()
-    signup_page = login_page.signup('Sabbir','ssualsabbir@gmail.com')
+    signup_page = login_page.signup('Sabbir','ssssualsabbir@gmail.com')
     confirmation_page = signup_page.create_account(registration_data)
     assert confirmation_page.is_account_created(),'Failed to create Account'
     homepage =  confirmation_page.goback_to_homepage()

@@ -45,4 +45,25 @@ def test_user_login(page: Page, login_data: LoginData):
 
 
 
+def test_user_logout(page: Page):
+    homepage = HomePage(page)
+    homepage.visit()
+    assert homepage.is_loaded()
+
+    login_page = homepage.goto_login_or_signup()
+    assert login_page.is_loaded()
+    homepage = login_page.login(login_data_list[0])
+    login_page = homepage.logout()
+    assert login_page.is_loaded(),'Failed to logout properly'
+
+
+
+
+
+
+
+
+
+
+
 

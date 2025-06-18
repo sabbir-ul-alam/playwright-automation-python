@@ -23,6 +23,7 @@ class HomePage:
             self.login_link = page.locator('a[href="/login"]')
             self.logged_in_as = page.get_by_text(re.compile("Logged in as \w+",re.IGNORECASE))
             self.delete_account_link = page.locator('a[href="/delete_account"]')
+            self.logout_link = page.locator('a[href="/logout"]')
 
     def visit(self):
         self.page.goto(self.homeUrl)
@@ -52,6 +53,10 @@ class HomePage:
     def delete_account(self):
         self.locators.delete_account_link.click()
         return ConfirmationPage(self.page)
+
+    def logout(self):
+        self.locators.logout_link.click()
+        return LoginPage(self.page)
 
 
 

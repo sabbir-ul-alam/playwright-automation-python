@@ -591,6 +591,22 @@ pytest-base-url = ">=1.0.0,<3.0.0"
 python-slugify = ">=6.0.0,<9.0.0"
 
 [[package]]
+name = "pytest-rerunfailures"
+version = "15.1"
+description = "pytest plugin to re-run tests to eliminate flaky failures"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "pytest_rerunfailures-15.1-py3-none-any.whl", hash = "sha256:f674c3594845aba8b23c78e99b1ff8068556cc6a8b277f728071fdc4f4b0b355"},
+    {file = "pytest_rerunfailures-15.1.tar.gz", hash = "sha256:c6040368abd7b8138c5b67288be17d6e5611b7368755ce0465dda0362c8ece80"},
+]
+
+[package.dependencies]
+packaging = ">=17.1"
+pytest = ">=7.4,<8.2.2 || >8.2.2"
+
+[[package]]
 name = "pytest-xdist"
 version = "3.6.1"
 description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
@@ -743,4 +759,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "784b15a92823c3fd2691b5df8ee56222a9686c73fcc995aaaa7c7f8f65956fdb"
+content-hash = "4f27ca8afd8f85645002410223448bd13a45e49f2c97aac87aca81e872471e61"
