@@ -35,13 +35,12 @@ Test Case 26: Verify Scroll Up without 'Arrow' button and Scroll Down functional
 product_data = product_data_list[0]
 login_data = login_data_list[0]
 payment_data = payment_data_list[0]
-def test_download_invoice_after_purchase_order(page:Page):
+
+def test_download_invoice_after_purchase_order(validated_homepage: HomePage):
     logged_in = False
-    homepage = HomePage(page)
-    homepage.visit()
-    assert homepage.is_loaded()
-    homepage.add_feature_product_to_cart(product_data)
-    cart_page = homepage.goto_cart_from_modal()
+    validated_homepage.add_feature_product_to_cart(product_data)
+    cart_page = validated_homepage.goto_cart_from_modal()
+    
     if logged_in:
         checkout_page = cart_page.checkout(logged_in)
     else:
@@ -51,15 +50,11 @@ def test_download_invoice_after_purchase_order(page:Page):
         homepage = login_page.login(login_data)
         cart_page = homepage.goto_cart()
         checkout_page = cart_page.checkout(logged_in)
+    
     payment_page = checkout_page.place_order()
     confirmation_page = payment_page.make_payment(payment_data)
-    assert confirmation_page.download_invoice() is not None,'Failed to download'
+    assert confirmation_page.download_invoice() is not None, 'Failed to download'
 
-
-
-
-
-    # page.get_by_text('Register / Login').click()
 
 
 

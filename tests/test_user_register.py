@@ -1,9 +1,9 @@
 from playwright.sync_api import Page
 from page_objects.home_page import HomePage
-from test_data.registration_data import UserRegisterData
+from test_data.registration_data import user_registration_data_list
 
 
-registration_data = UserRegisterData()
+registration_data = user_registration_data_list[0]
 
 
 '''
@@ -28,20 +28,20 @@ Test Case 1: Register User
 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
 
 '''
-def test_case_1_register_user(page: Page):
-    homepage = HomePage(page)
-    homepage.visit()
-    assert homepage.is_loaded(), 'Failed to load homepage'
-    login_page = homepage.goto_login_or_signup()
+def test_case_1_register_user(validated_homepage: HomePage):
+    login_page = validated_homepage.goto_login_or_signup()
     signup_page = login_page.signup('Sabbir','ssssualsabbir@gmail.com')
     confirmation_page = signup_page.create_account(registration_data)
-    assert confirmation_page.is_account_created(),'Failed to create Account'
-    homepage =  confirmation_page.goback_to_homepage()
-    assert homepage.is_loaded(),'Failed to load homepage'
+    assert confirmation_page.is_account_created(), 'Failed to create Account'
+    
+    homepage = confirmation_page.goback_to_homepage()
+    assert homepage.is_loaded(), 'Failed to load homepage'
     #verify logged is as user name visible
-    assert homepage.is_user_logged_in(registration_data.name),'Failed to logged in user after signup'
-    confirmation_page =  homepage.delete_account()
-    assert confirmation_page.is_account_deleted(),'Failed to delete account'
+    assert homepage.is_user_logged_in(registration_data.name), 'Failed to logged in user after signup'
+    
+    confirmation_page = homepage.delete_account()
+    assert confirmation_page.is_account_deleted(), 'Failed to delete account'
+    
     homepage = confirmation_page.goback_to_homepage()
     assert homepage.is_loaded()
 
