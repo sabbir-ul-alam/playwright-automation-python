@@ -1,5 +1,6 @@
-import  pytest
+import pytest
 import json
+from page_objects.home_page import HomePage
 
 
 def pytest_addoption(parser):
@@ -13,6 +14,18 @@ def config(request):
     env = request.config.getoption("--env")
     with open(f"config/{env}.json") as f:
         return json.load(f)
+
+
+@pytest.fixture
+def validated_homepage(page):
+    """
+    Fixture that visits and validates the homepage.
+    Returns a validated HomePage object that can be used in tests.
+    """
+    homepage = HomePage(page)
+    homepage.visit()
+    assert homepage.is_loaded(), "Homepage failed to load properly"
+    return homepage
 
 
 

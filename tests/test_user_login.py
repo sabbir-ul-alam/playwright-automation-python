@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import Page
 
-from page_objects.home_page import HomePage
 from test_data.login_data import LoginData, login_data_list
 
 '''
@@ -27,12 +26,8 @@ Test Case 3: Login User with incorrect email and password
 '''
 
 @pytest.mark.parametrize("login_data", login_data_list)
-def test_user_login(page: Page, login_data: LoginData):
-    homepage = HomePage(page)
-    homepage.visit()
-    assert homepage.is_loaded()
-
-    login_page = homepage.goto_login_or_signup()
+def test_user_login(validated_homepage, login_data: LoginData):
+    login_page = validated_homepage.goto_login_or_signup()
     assert login_page.is_loaded()
 
     if login_data.valid:
@@ -44,13 +39,8 @@ def test_user_login(page: Page, login_data: LoginData):
         assert login_page.invalid_login(), 'Login error message is not showing for invalid login'
 
 
-
-def test_user_logout(page: Page):
-    homepage = HomePage(page)
-    homepage.visit()
-    assert homepage.is_loaded()
-
-    login_page = homepage.goto_login_or_signup()
+def test_user_logout(validated_homepage):
+    login_page = validated_homepage.goto_login_or_signup()
     assert login_page.is_loaded()
     homepage = login_page.login(login_data_list[0])
     login_page = homepage.logout()

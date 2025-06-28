@@ -45,7 +45,7 @@ class ContactusPage:
         # dialog_info.value.accept()
 
         self.page.on("dialog", lambda dialog: dialog.accept())
-        time.sleep(.3)
+        time.sleep(.5)
         self.locators.submit_button.click()
 
 
