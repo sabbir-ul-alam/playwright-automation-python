@@ -34,7 +34,6 @@ class SignupPage:
             self.mobile_input_field = self.page.locator('[data-qa="mobile_number"]')
             self.create_account_button = self.page.locator('[data-qa="create-account"]')
 
-
         def title_radio_box(self, label: str):
             return self.page.get_by_role("radio", name=label)
 
@@ -56,7 +55,6 @@ class SignupPage:
         self.locators.city_input_field.fill(data.city)
         self.locators.zipcode_input_field.fill(data.zipcode)
         self.locators.mobile_input_field.fill(data.mobile)
-
 
     def create_account(self, data: UserRegisterData):
         self.fill_form(data)

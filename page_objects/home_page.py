@@ -6,13 +6,14 @@ from page_objects.cart_page import CartPage
 from page_objects.confirmation_page import ConfirmationPage
 from page_objects.contactus_page import ContactusPage
 from page_objects.login_page import LoginPage
+from page_objects.products_page import ProductsPage
 from test_data.product_data import ProductData
 from utils.css_helper import get_css_property
 
 
 class HomePage:
 
-    homeUrl : str =  'http://automationexercise.com'
+    homeUrl : str =  'https://automationexercise.com'
     LOGGED_IN_AS_TEXT : str = "Logged in as"
 
     def __init__(self, page: Page):
@@ -22,14 +23,14 @@ class HomePage:
     class Locators:
         def __init__(self, page: Page):
             self.page = page
-            self.home_link = page.get_by_role('link',name='Home')
-            # page.get_by_role("link", name="Signup / Login")
-            self.login_link = page.locator('a[href="/login"]')
+            self.home_link = page.get_by_role("link", name=" Home")
+            self.login_signup_link = page.get_by_role("link", name=" Signup / Login")
+            self.logged_in_as_text = page.get_by_text(HomePage.LOGGED_IN_AS_TEXT)
+            self.logout_link = page.get_by_role("link", name=" Logout")
+            self.contact_us_link = page.get_by_role("link", name=" Contact us")
+            self.products_link = page.get_by_role("link", name=" Products")
             self.cart_link = page.locator('.navbar-nav > li >a[href="/view_cart"]')
-            self.logged_in_as = page.get_by_text(re.compile("Logged in as \w+",re.IGNORECASE))
             self.delete_account_link = page.locator('a[href="/delete_account"]')
-            self.logout_link = page.locator('a[href="/logout"]')
-            self.contactus_link = page.locator('a[href="/contact_us"]')
             self.view_cart_modal= page.locator('.modal-body').get_by_text('View Cart')
 
 
@@ -54,16 +55,21 @@ class HomePage:
             return False
         return  True
 
-    def goto_login_or_signup(self):
-        self.locators.login_link.click()
+    def goto_login_or_signup(self) -> LoginPage:
+        self.locators.login_signup_link.click()
         return LoginPage(self.page)
 
-    def goto_contactus(self):
-        self.locators.contactus_link.click()
+    def goto_products(self) -> ProductsPage:
+        """Navigate to products page and return ProductsPage instance"""
+        self.locators.products_link.click()
+        return ProductsPage(self.page)
+
+    def goto_contact_us(self) -> ContactusPage:
+        self.locators.contact_us_link.click()
         return ContactusPage(self.page)
 
     def is_user_logged_in(self, user_name:str):
-        element = self.locators.logged_in_as
+        element = self.locators.logged_in_as_text
         if not element.is_visible():
             return  False
         if element.text_content().strip() != f"{self.LOGGED_IN_AS_TEXT} {user_name}":

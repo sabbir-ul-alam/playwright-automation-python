@@ -1,5 +1,4 @@
 import pytest
-from playwright.sync_api import Page
 from page_objects.home_page import HomePage
 from test_data.login_data import LoginData, login_data_list
 

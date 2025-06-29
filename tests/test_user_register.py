@@ -30,7 +30,7 @@ Test Case 1: Register User
 '''
 def test_case_1_register_user(validated_homepage: HomePage):
     login_page = validated_homepage.goto_login_or_signup()
-    signup_page = login_page.signup('Sabbir','ssssualsabbir@gmail.com')
+    signup_page = login_page.signup(registration_data.name,registration_data.email)
     confirmation_page = signup_page.create_account(registration_data)
     assert confirmation_page.is_account_created(), 'Failed to create Account'
     
