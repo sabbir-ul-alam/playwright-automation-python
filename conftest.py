@@ -29,8 +29,9 @@ def pytest_generate_tests(metafunc):
 @pytest.fixture(scope="function")
 def test_browser(request):
     browser_name = request.param
+    headless = not getattr(request.config.option, "headed", False)
     with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch(headless=False)
+        browser = getattr(p, browser_name).launch(headless=headless)
         context = browser.new_context()
         page = context.new_page()
         yield page
