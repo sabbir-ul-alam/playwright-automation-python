@@ -1,5 +1,4 @@
-from playwright.sync_api import  Page
-
+import pytest
 from page_objects.home_page import HomePage
 from test_data.login_data import login_data_list
 from test_data.product_data import product_data_list
@@ -36,10 +35,16 @@ product_data = product_data_list[0]
 login_data = login_data_list[0]
 payment_data = payment_data_list[0]
 
-def test_download_invoice_after_purchase_order(validated_homepage: HomePage):
+@pytest.mark.cross_browser
+def test_download_invoice_after_purchase_order(test_browser):
+    page = test_browser
     logged_in = False
-    validated_homepage.add_feature_product_to_cart(product_data)
-    cart_page = validated_homepage.goto_cart_from_modal()
+
+    homepage = HomePage(page)
+    homepage.visit()
+    assert homepage.is_loaded(), "Homepage failed to load properly"
+    homepage.add_feature_product_to_cart(product_data)
+    cart_page = homepage.goto_cart_from_modal()
     
     if logged_in:
         checkout_page = cart_page.checkout(logged_in)
