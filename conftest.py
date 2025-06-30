@@ -1,6 +1,7 @@
 import pytest
 import json
 from page_objects.home_page import HomePage
+from playwright.sync_api import Page
 
 
 def pytest_addoption(parser):
@@ -17,7 +18,7 @@ def config(request):
 
 
 @pytest.fixture
-def validated_homepage(page):
+def validated_homepage(page: Page):
     """
     Fixture that visits and validates the homepage.
     Returns a validated HomePage object that can be used in tests.

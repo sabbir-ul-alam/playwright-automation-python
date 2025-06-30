@@ -1,0 +1,10 @@
+{
+    "base_url": "https://automationexercise.com/api",
+    "endpoints": {
+        "products_list": "/productsList",
+        "brands_list": "/brandsList",
+        "verify_login": "/verifyLogin"
+    },
+    "timeout": 30000,
+    "retry_count": 3
+} 
