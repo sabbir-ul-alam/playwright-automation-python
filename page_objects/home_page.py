@@ -7,6 +7,7 @@ from page_objects.confirmation_page import ConfirmationPage
 from page_objects.contactus_page import ContactusPage
 from page_objects.login_page import LoginPage
 from page_objects.products_page import ProductsPage
+from page_objects.testcase_page import PageTestCase
 from test_data.product_data import ProductData
 from utils.css_helper import get_css_property
 
@@ -31,6 +32,7 @@ class HomePage:
             self.products_link = page.get_by_role("link", name=" Products")
             self.cart_link = page.locator('.navbar-nav > li >a[href="/view_cart"]')
             self.delete_account_link = page.locator('a[href="/delete_account"]')
+            self.test_case_page_link = page.locator('a[href="/test_cases"]').first
             self.view_cart_modal= page.locator('.modal-body').get_by_text('View Cart')
 
 
@@ -39,9 +41,6 @@ class HomePage:
                 self.page.locator('.features_items').locator(f'.productinfo > a[data-product-id="{product_id}"]'),
                 self.page.locator(f'.overlay-content > a[data-product-id="{product_id}"]')
             ]
-
-
-
 
 
     def visit(self):
@@ -100,6 +99,10 @@ class HomePage:
     def goto_cart(self):
         self.locators.cart_link.click()
         return CartPage(self.page)
+
+    def goto_testcase_page_in_new_tab(self):
+        self.locators.test_case_page_link.click(modifiers=["Control"])
+        # return  TestCasePage(self.page)
 
 
 
