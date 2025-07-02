@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from playwright.sync_api import sync_playwright, Page
+from playwright.sync_api import Playwright, Page
 from page_objects.home_page import HomePage
 from test_data.login_data import login_data_list
 from test_data.product_data import product_data_list
@@ -8,32 +8,29 @@ from test_data.product_data import product_data_list
 product_data = product_data_list[0]
 login_data = login_data_list[0]
 
+@pytest.fixture(scope="class", autouse=True)
+def login_and_save_state(playwright: Playwright):
+    state_file = Path("state/state.json")
+    # if not state_file.exists():
+    browser = playwright.chromium.launch()
+    context = browser.new_context()
+    page = context.new_page()
+
+    homepage = HomePage(page)
+    homepage.visit()
+    assert homepage.is_loaded(), "Homepage failed to load properly"
+
+    login_page = homepage.goto_login_or_signup()
+    login_page.login(login_data)
+
+    context.storage_state(path=str(state_file))
+    browser.close()
+
+@pytest.fixture(scope="function")
+def browser_context_args():
+    return {"storage_state": "state/state.json"}
+
 class TestSingleLogin:
-
-    @classmethod
-    def setup_class(cls):
-        state_file = Path("state/state.json")
-        if state_file.exists():
-            return
-
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context()
-            page = context.new_page()
-
-            homepage = HomePage(page)
-            homepage.visit()
-            assert homepage.is_loaded(), "Homepage failed to load properly"
-
-            login_page = homepage.goto_login_or_signup()
-            login_page.login(login_data)
-
-            context.storage_state(path=str(state_file))
-            browser.close()
-
-    @pytest.fixture(scope="function")
-    def browser_context_args(self):
-        return {"storage_state": "state/state.json"}
 
     def test_add_product_to_cart_from_product_page(self, page: Page):
         homepage = HomePage(page)
