@@ -53,7 +53,7 @@ def test_download_invoice_after_purchase_order(test_browser):
         login_page = cart_page.goto_login_from_modal()
         logged_in = True
         homepage = login_page.login(login_data)
-        cart_page = homepage.goto_cart()
+        cart_page = homepage.goto_cart_page()
         checkout_page = cart_page.checkout(logged_in)
     
     payment_page = checkout_page.place_order()

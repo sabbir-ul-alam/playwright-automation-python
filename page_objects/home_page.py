@@ -97,7 +97,7 @@ class HomePage:
         self.locators.view_cart_modal.click()
         return CartPage(self.page)
 
-    def goto_cart(self):
+    def goto_cart_page(self):
         self.locators.cart_link.click()
         return CartPage(self.page)
 
