@@ -24,7 +24,7 @@ def products_page(validated_homepage: HomePage) -> ProductsPage:
     Returns a validated ProductsPage object that can be used in tests.
     """
     # Navigate to products page using proper page object navigation
-    products_page = validated_homepage.goto_products()
+    products_page = validated_homepage.goto_product_page()
     assert products_page.is_products_page_visible(), "Products page failed to load properly"
     return products_page
 

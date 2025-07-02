@@ -4,6 +4,7 @@ from dataclasses import dataclass
 class ProductData:
     product_id: int
     product_name: str
+    price : int
     #image
     #category
 
@@ -11,21 +12,18 @@ class ProductData:
 class ProductSearchData:
     search_term: str
     expected_results: bool
-    description: str
 
 product_data_list = [
-    ProductData(product_id=2, product_name='Men Tshirt')
+    ProductData(product_id=2, product_name='Men Tshirt', price=400)
 ]
 
 product_search_data_list = [
     ProductSearchData(
         search_term="Men Tshirt",
         expected_results=True,
-        description="Search for existing product"
     ),
     ProductSearchData(
         search_term="NonexistentProduct123",
         expected_results=False,
-        description="Search for non-existent product"
     )
 ]

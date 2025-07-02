@@ -58,7 +58,7 @@ class HomePage:
         self.locators.login_signup_link.click()
         return LoginPage(self.page)
 
-    def goto_products(self) -> ProductsPage:
+    def goto_product_page(self) -> ProductsPage:
         """Navigate to products page and return ProductsPage instance"""
         self.locators.products_link.click()
         return ProductsPage(self.page)
@@ -87,9 +87,10 @@ class HomePage:
 
     def add_feature_product_to_cart(self, product: ProductData):
         product_element, overlay_element = self.locators.product_locators(product_id=product.product_id)
+        product_element.scroll_into_view_if_needed()
         product_element.hover()
         assert overlay_element.is_visible()
-        overlay_element.scroll_into_view_if_needed()
+        # overlay_element.scroll_into_view_if_needed()
         overlay_element.click()
 
     def goto_cart_from_modal(self):
