@@ -1,5 +1,5 @@
 [project]
-name = "realworldapp"
+name = "playwright.automation.python"
 version = "0.1.0"
 description = "Playwright automation practice with python."
 authors = [
